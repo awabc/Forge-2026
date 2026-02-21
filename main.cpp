@@ -3,10 +3,17 @@
 
 Controller controller("LeBot", "123456789");
 
+int MOTOR_ENA = 9;
+int MOTOR_IN1 = 2;
+int MOTOR_IN2 = 4;
+int MOTOR_ENB = 10;
+int MOTOR_IN3 = 7;
+int MOTOR_IN4 = 8;
+
 
 void setup() {
     
-    serial.begin(115200);
+    Serial.begin(115200);
 
     //Enable status LED:
     controller.enableStatusLED(LED_BUILTIN);
@@ -14,8 +21,8 @@ void setup() {
     //Controller library settings:
     controller.setMotorMinPWM(90);
     controller.configureL298N(
-    1, 1, 1,    // ENA, IN1, IN2
-    1, 1, 1    // ENB, IN3, IN4
+    MOTOR_ENA, MOTOR_IN1, MOTOR_IN2,    // ENA, IN1, IN2
+    MOTOR_ENB, MOTOR_IN3, MOTOR_IN4   // ENB, IN3, IN4
     );
     controller.beginAP(true);
     controller.setFailsafeTimeoutMs(1500);
@@ -36,9 +43,6 @@ void setup() {
 
 
 void loop() {
-
-
-
 
     controller.update();
 }
