@@ -3,12 +3,15 @@
 
 Controller controller("LeBot", "123456789");
 
+// Inverted up and down: In1-2 In2-4 In3-7 In4-8
+// Normal: In1-8 In2-7 In3-4 In4-2
+
 int MOTOR_ENA = 9;
-int MOTOR_IN1 = 2;
-int MOTOR_IN2 = 4;
+int MOTOR_IN1 = 8;
+int MOTOR_IN2 = 7;
 int MOTOR_ENB = 10;
-int MOTOR_IN3 = 7;
-int MOTOR_IN4 = 8;
+int MOTOR_IN3 = 4;
+int MOTOR_IN4 = 2;
 
 int CATAPULT_IN1 = 12;
 int CATAPULT_IN2 = 3;
@@ -19,7 +22,6 @@ bool catapultFiring = false;
 
 void fire();
 void fireCatapult(int speed, unsigned long durationMs);
-
 
 void setup() {
     
@@ -68,8 +70,10 @@ void loop() {
 // Function to fire the catapult
 // speed: 0 (off) to 255 (max speed)
 // durationMs: how long the gear spins to release the catapult (in milliseconds)
+
+// 150/650 works well, test lower pwm higher time
 void fire() {
-    fireCatapult(150,700);
+    fireCatapult(150,650);
 }
 
 void fireCatapult(int speed, unsigned long durationMs) {
