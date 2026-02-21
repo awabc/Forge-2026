@@ -10,6 +10,9 @@ int MOTOR_ENB = 10;
 int MOTOR_IN3 = 7;
 int MOTOR_IN4 = 8;
 
+int CATAPULT_IN1 = 12;
+int CATAPULT_ENA = 6;
+
 
 void setup() {
     
@@ -25,7 +28,7 @@ void setup() {
     MOTOR_ENB, MOTOR_IN3, MOTOR_IN4   // ENB, IN3, IN4
     );
     controller.beginAP(true);
-    controller.setFailsafeTimeoutMs(1500);
+    controller.setFailsafeTimeoutMs(800);
     
     //Custom buttons for controller:
     controller.registerButton("Three Pointer", threePointer);
@@ -50,7 +53,7 @@ void loop() {
 // Custom shot buttons:
 
 void threePointer() {
-  Serial.println("Button pressed!");
+  fireCatapult(255, 100);
 }
 
 void twoPointer() {
@@ -87,4 +90,21 @@ void star_6() {
 
 void star_7() {
 
+}
+
+// Function to fire the catapult
+// speed: 0 (off) to 255 (max speed)
+// durationMs: how long the gear spins to release the catapult (in milliseconds)
+void fireCatapult(int speed, unsigned long durationMs) {
+  
+  // 1. Turn motor ON and set speed
+  analogWrite(CATAPULT_ENA, speed);
+  digitalWrite(CATAPULT_IN1, HIGH);
+  
+  // 2. Keep spinning to wind/release the catapult
+  delay(durationMs);
+  
+  // 3. STOP the motor immediately after
+  digitalWrite(MOTOR_IN1, LOW);
+  analogWrite(MOTOR_ENA, 0);
 }
