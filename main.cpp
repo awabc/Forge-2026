@@ -20,8 +20,14 @@ int CATAPULT_ENA = 6;
 unsigned long catapultStopMs = 0;
 bool catapultFiring = false;
 
+//Not sure if necessary, but initialize functions:
 void fire();
 void fireCatapult(int speed, unsigned long durationMs);
+
+void forward();
+void backward();
+void right();
+void left();
 
 void setup() {
     
@@ -47,10 +53,14 @@ void setup() {
     controller.beginAP(true);
     controller.setFailsafeTimeoutMs(800);
     
-    //Custom buttons for controller:
+    //Custom buttons for catapult:
     controller.registerButton("Fire!", fire);
 
-
+    //Custom buttons for microadjustments:
+    controller.registerButton("Forward", forward);
+    controller.registerButton("Backward", backward);
+    controller.registerButton("Right", right); 
+    controller.registerButton("Left", left);
 }
 
 void loop() {
@@ -66,6 +76,58 @@ void loop() {
         catapultFiring = false; // Reset the state
     }
 }
+
+// Microadjustent Buttons:
+
+void forward() {
+    microAdjust(1,1);
+}
+
+void backward() {
+    microAdjust(-1,-1);
+}
+
+void right() {
+    microAdjust(1,-1);
+}
+
+void left() {
+    microAdjust(-1,1);
+}
+
+void microAdjust(int leftDir, int rightDir) {
+    int burstSpeed = 250; // High speed to overcome friction instantly
+    int burstTime = 80;   // 80ms to 120ms 
+
+    // Set Left Motor direction (1 = Forward, -1 = Backward)
+    if (leftDir == 1) { 
+        digitalWrite(MOTOR_IN1, HIGH);
+        digitalWrite(MOTOR_IN2, LOW);
+    } else { 
+        digitalWrite(MOTOR_IN1, LOW);
+        digitalWrite(MOTOR_IN2, HIGH);
+    }
+    analogWrite(MOTOR_ENA, burstSpeed);
+
+    // Set Right Motor direction
+    if (rightDir == 1) { 
+        digitalWrite(MOTOR_IN3, HIGH);
+        digitalWrite(MOTOR_IN4, LOW);
+    } else { 
+        digitalWrite(MOTOR_IN3, LOW);
+        digitalWrite(MOTOR_IN4, HIGH);
+    }
+    analogWrite(MOTOR_ENB, burstSpeed);
+
+    // Pause briefly to let the robot actually move
+    delay(burstTime); 
+
+    // HARD BRAKE: Setting both IN pins HIGH stops the motor faster than just cutting power
+    digitalWrite(MOTOR_IN1, HIGH); digitalWrite(MOTOR_IN2, HIGH);
+    digitalWrite(MOTOR_IN3, HIGH); digitalWrite(MOTOR_IN4, HIGH);
+    analogWrite(MOTOR_ENA, 0);     analogWrite(MOTOR_ENB, 0);
+}
+
 
 // Function to fire the catapult
 // speed: 0 (off) to 255 (max speed)
@@ -87,5 +149,4 @@ void fireCatapult(int speed, unsigned long durationMs) {
   
   catapultStopMs = millis() + durationMs;
   catapultFiring = true;
-    
 }
