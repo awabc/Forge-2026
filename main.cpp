@@ -105,6 +105,6 @@ void fireCatapult(int speed, unsigned long durationMs) {
   delay(durationMs);
   
   // 3. STOP the motor immediately after
-  digitalWrite(MOTOR_IN1, LOW);
-  analogWrite(MOTOR_ENA, 0);
+  digitalWrite(CATAPULT_IN1, LOW);
+  analogWrite(CATAPULT_ENA, 0);
 }
