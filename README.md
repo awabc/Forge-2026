@@ -1,7 +1,7 @@
 
 # Forge 2026
 
-> This robot was built for McGill's The Forge 2026 hardware hackathon. The task included building a robot using given hardware that could follow a line and shoot a ball into a hoop at different positions
+> This robot was built for McGill's The Forge 2026 hardware hackathon. The task included building a robot using given hardware that could follow a line and shoot a ball into a hoop at different positions.
 > 
 > Built by: Awab Choudhury, Justin Ferreira, Edwin Kintu, Charles Wang, William Zhang
 
